@@ -77,6 +77,10 @@ bool insertNode (LDE <T> *list, int id, int weight) {
     else {
         aux = list->head;
         while(aux!= NULL){
+            if(aux->prox == NULL){
+                break;
+            }
+
             if(id > aux->id && id < aux->prox->id){
                 aux2 = aux->prox;
 
