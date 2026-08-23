@@ -8,7 +8,11 @@ int main(){
     LDE <int> list;
     initializeLDE(list);
 
-    insertNode(&list, 3, 10);
+    insertNode(&list, 5, 20);
+    insertNode(&list, 3, 20);
+    showLDE(list);
+
+    /*insertNode(&list, 3, 10);
     insertNode(&list, 5, 20);
     insertNode(&list, 4, 30);
     insertNode(&list, 6, 40);
@@ -22,7 +26,7 @@ int main(){
 
     cout << endl;
 
-    showLDE(list);
+    showLDE(list);*/
 
     deleteLDE(&list);
 

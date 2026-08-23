@@ -102,6 +102,10 @@ template <typename T>
 bool removeNode (LDE <T> *list, int id){
     Node <T> *aux, *aux2, *aux3;
 
+    if(list->head == NULL){
+        return false;
+    }
+
     // Caso seja o primeiro valor
     if(id == list->head->id){
         aux = list->head;
@@ -109,7 +113,7 @@ bool removeNode (LDE <T> *list, int id){
         if(aux->prox == NULL){ 
             list->head = NULL;
             list->tail = NULL;
-
+            delete aux;
         }
         // Caso tenha mais valores na lista
         else {
@@ -117,6 +121,7 @@ bool removeNode (LDE <T> *list, int id){
             aux->prox = NULL;
             aux2->prev = NULL;
             list->head = aux2;
+            delete aux;
         }
     }
 
@@ -129,6 +134,7 @@ bool removeNode (LDE <T> *list, int id){
         aux2->prox = NULL;
 
         list->tail = aux2;
+        delete aux;
     }
     else{
         aux = list->head;
@@ -143,12 +149,15 @@ bool removeNode (LDE <T> *list, int id){
                 aux->prox = NULL;
                 aux->prev = NULL;
 
-                aux = aux3;
-                
+                delete aux;
+                break;
             }
+
             aux = aux->prox;
         }
     }
+
+    return true;
 
 }
 
