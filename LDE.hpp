@@ -145,7 +145,7 @@ bool removeNode (LDE <T> *list, int id){
                 aux3 = aux->prox;
                 aux2->prox = aux3;
                 aux3->prev = aux2;
-                
+
                 aux->prox = NULL;
                 aux->prev = NULL;
 
