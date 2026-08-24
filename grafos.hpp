@@ -39,21 +39,19 @@ public:
 class GrafoLista : public Grafos
 {
 private:
-    struct Aresta
-    {
-        int destino;
-        int peso;
-    };
-
-    // uma LDE<int> por vértice: cada Node guarda id/weight do destino da aresta
-    vector<LDE<int>> listaAdj;
+    LDEVertices listaVertices;
 
 public:
-    GrafoLista(bool directed, bool pondered, int numVertices) : Grafos(directed, pondered, numVertices), listaAdj(numVertices)
+    GrafoLista(bool directed, bool pondered, int numVertices) : Grafos(directed, pondered, numVertices), listaVertices()
     {
         for (int i = 0; i < numVertices; i++)
         {
-            initializeLDE(listaAdj[i]);
+            insertVertice(&listaVertices, i);
         }
+    }
+
+    ~GrafoLista()
+    {
+        deleteVertices(&listaVertices);
     }
 };
