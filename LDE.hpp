@@ -1,3 +1,4 @@
+#pragma once 
 #include <iostream>
 
 using namespace std;
@@ -132,6 +133,7 @@ bool removeNode(LDE<T> *list, int id)
             list->head = NULL;
             list->tail = NULL;
             delete aux;
+            return true;
         }
         // Caso tenha mais valores na lista
         else
@@ -141,6 +143,7 @@ bool removeNode(LDE<T> *list, int id)
             aux2->prev = NULL;
             list->head = aux2;
             delete aux;
+            return true;
         }
     }
 
@@ -155,6 +158,7 @@ bool removeNode(LDE<T> *list, int id)
 
         list->tail = aux2;
         delete aux;
+        return true;
     }
     else
     {
@@ -173,21 +177,36 @@ bool removeNode(LDE<T> *list, int id)
                 aux->prev = NULL;
 
                 delete aux;
-                break;
+                return true;
             }
 
             aux = aux->prox;
         }
     }
 
-    return true;
+    return false;
+}
+
+template <typename T>
+bool searchNode(LDE<T> *lista, T valor){
+    Node <T> *aux;
+
+    if(lista->head == NULL) return false;
+
+    aux = lista->head;
+
+    while(aux != NULL){
+        if(aux->id == valor) return true;
+        aux = aux->prox;
+    }
+    return false;
 }
 
 // Mostrar no terminal
 template <typename T>
-void showLDE(LDE<T> lista)
+void showLDE(LDE<T> *lista)
 {
-    Node<T> *aux = lista.head;
+    Node<T> *aux = lista->head;
     while (aux != NULL)
     {
         cout << aux->id << " ";
