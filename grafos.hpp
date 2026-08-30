@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <iostream>
 #include <vector>
 #include "LDE.hpp"
@@ -36,95 +36,191 @@ public:
     {
     }
 
-    bool insertAresta(int origem, int destino, int peso = 1){
-        if(origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) return false;
+    // Funções de vértices 
+
+    // Inserir vertice
+    bool insertVertice(){
+        for(int i = 0; i < numVertices; i++){
+            matrizAdj[i].push_back(0);
+        }
+        vector<int> vetorTemp(numVertices + 1, 0);
+        matrizAdj.push_back(vetorTemp);
+        numVertices++;
+        return true;
+    }
+
+    bool insertAresta(int origem, int destino, int peso = 1)
+    {
+        if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices)
+            return false;
 
         int valor = pondered ? peso : 1;
 
         matrizAdj[origem][destino] = valor;
-        if(!directed){
+        if (!directed)
+        {
             matrizAdj[destino][origem] = valor;
         }
         return true;
     }
 
-    bool removeAresta(int origem, int destino){
-        if(origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) return false;
+    bool removeAresta(int origem, int destino)
+    {
+        if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices)
+            return false;
 
         matrizAdj[origem][destino] = 0;
-        
-        if(!directed){
+
+        if (!directed)
+        {
             matrizAdj[destino][origem] = 0;
         }
         return true;
     }
 
-    bool existeAresta(int origem, int destino){
-        if(origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) return false;
+    bool existsAresta(int origem, int destino)
+    {
+        if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices)
+            return false;
 
         return matrizAdj[origem][destino] > 0;
+    }
+
+    void show()
+    {
+        cout << "Matriz de Adjacencia:" << endl;
+
+        for (int i = 0; i < numVertices; i++)
+        {
+            for (int j = 0; j < numVertices; j++)
+            {
+                cout << matrizAdj[i][j] << " ";
+            }
+
+            cout << endl;
+        }
     }
 };
 
 class GrafoLista : public Grafos
 {
 private:
-    LDEVertices listaVertices;
+    LDE<LDE<int>> listaVertices;
 
 public:
     GrafoLista(bool directed, bool pondered, int numVertices) : Grafos(directed, pondered, numVertices), listaVertices()
     {
         for (int i = 0; i < numVertices; i++)
         {
-            insertVertice(&listaVertices, i);
+            insertNode(&listaVertices, i, LDE<int>());
         }
     }
 
     ~GrafoLista()
     {
-        deleteVertices(&listaVertices);
+        Node <LDE<int>> *aux = listaVertices.head;
+        while(aux != NULL){
+            Node <LDE<int>> *temp = aux;
+            deleteLDE(&temp->data);
+            delete temp;
+            aux = aux->prox;
+        }
+        listaVertices.head = listaVertices.tail = NULL;
     }
 
-    bool insertAresta(int origem, int destino, int peso = 1){
+    // funções básicas para vértice
 
-        NodeVertice *vOrigem = findVertice(&listaVertices, origem);
-        NodeVertice *vDestino = findVertice(&listaVertices, destino);
+    // Insere um novo vertice
+    bool insertVertice(){
+        insertNode(&listaVertices, numVertices, LDE<int>());
+        numVertices++;
 
-        if (vOrigem == NULL || vDestino == NULL) return false;
+        return true;
+    }
+
+    bool insertAresta(int origem, int destino, int peso = 1)
+    {
+
+        Node <LDE<int>> *vOrigem = findNode(&listaVertices, origem);
+        Node <LDE<int>> *vDestino = findNode(&listaVertices, destino);
+
+        if (vOrigem == NULL || vDestino == NULL)
+            return false;
 
         int valor = pondered ? peso : 1;
 
-        insertNode(&vOrigem->listaAdjacencia, destino, valor);
+        insertNode(&vOrigem->data, destino, valor);
 
-        if(!directed){
-            insertNode(&vDestino->listaAdjacencia, origem, valor);
+        if (!directed)
+        {
+            insertNode(&vDestino->data, origem, valor);
         }
         return true;
     }
 
-    bool removeAresta(int origem, int destino){
+    bool removeAresta(int origem, int destino)
+    {
 
-        NodeVertice *vOrigem = findVertice(&listaVertices, origem);
-        NodeVertice *vDestino = findVertice(&listaVertices, destino);
+        Node <LDE<int>> *vOrigem = findNode(&listaVertices, origem);
+        Node <LDE<int>> *vDestino = findNode(&listaVertices, destino);
 
-        if (vOrigem == NULL || vDestino == NULL) return false;
+        if (vOrigem == NULL || vDestino == NULL)
+            return false;
 
-        removeNode(&vOrigem->listaAdjacencia, destino);
+        removeNode(&vOrigem->data, destino);
 
-        if(!directed){
-            removeNode(&vDestino->listaAdjacencia, origem);
+        if (!directed)
+        {
+            removeNode(&vDestino->data, origem);
         }
 
         return true;
     }
 
-    bool existeAresta(int origem, int destino){
-        
-        NodeVertice *vOrigem = findVertice(&listaVertices, origem);
-        NodeVertice *vDestino = findVertice(&listaVertices, destino);
+    bool existsAresta(int origem, int destino)
+    {
 
-        if (vOrigem == NULL || vDestino == NULL) return false;
+        Node <LDE<int>> *vOrigem = findNode(&listaVertices, origem);
+        Node <LDE<int>> *vDestino = findNode(&listaVertices, destino);
 
-        return searchNode(&vOrigem->listaAdjacencia, destino);
+        if (vOrigem == NULL || vDestino == NULL)
+            return false;
+
+        return searchNode(&vOrigem->data, destino);
+    }
+
+    void show()
+    {
+        cout << "Lista de Adjacencia:" << endl;
+
+        Node <LDE<int>> *vertice = listaVertices.head;
+
+        while (vertice != NULL)
+        {
+            cout << vertice->id << ": ";
+
+            Node<int> *aresta = vertice->data.head;
+
+            while (aresta != NULL)
+            {
+                cout << aresta->id;
+
+                if (pondered)
+                {
+                    cout << "(" << aresta->data << ")";
+                }
+
+                if (aresta->prox != NULL)
+                {
+                    cout << " -> ";
+                }
+
+                aresta = aresta->prox;
+            }
+
+            cout << endl;
+
+            vertice = vertice->prox;
+        }
     }
 };

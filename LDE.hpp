@@ -7,7 +7,7 @@ template <typename T>
 struct Node
 {
     int id;
-    int weight;
+    T data;
     Node<T> *prox = NULL;
     Node<T> *prev = NULL;
 };
@@ -28,11 +28,11 @@ void initializeLDE(LDE<T> &list)
 
 // Inseri sempre no final
 template <typename T>
-bool insertFinal(LDE<T> *list, int id, int weight)
+bool insertFinal(LDE<T> *list, int id, T data)
 {
     Node<T> *new_node = new Node<T>;
     new_node->id = id;
-    new_node->weight = weight;
+    new_node->data = data;
     new_node->prox = NULL;
     new_node->prev = NULL;
 
@@ -53,11 +53,11 @@ bool insertFinal(LDE<T> *list, int id, int weight)
 
 // Sempre de forma ordenada pelo id
 template <typename T>
-bool insertNode(LDE<T> *list, int id, int weight)
+bool insertNode(LDE<T> *list, int id, T data)
 {
     Node<T> *new_node = new Node<T>;
     new_node->id = id;
-    new_node->weight = weight;
+    new_node->data = data;
     new_node->prox = NULL;
     new_node->prev = NULL;
 
@@ -188,7 +188,7 @@ bool removeNode(LDE<T> *list, int id)
 }
 
 template <typename T>
-bool searchNode(LDE<T> *lista, T valor){
+bool searchNode(LDE<T> *lista, int id){
     Node <T> *aux;
 
     if(lista->head == NULL) return false;
@@ -196,7 +196,7 @@ bool searchNode(LDE<T> *lista, T valor){
     aux = lista->head;
 
     while(aux != NULL){
-        if(aux->id == valor) return true;
+        if(aux->id == id) return true;
         aux = aux->prox;
     }
     return false;
@@ -214,6 +214,17 @@ void showLDE(LDE<T> *lista)
     }
 }
 
+// Retornar node
+template <typename T>
+Node <T> *findNode(LDE<T> *list, int id){
+    Node <T> *aux = list->head;
+    while(aux != NULL){
+        if(aux->id == id) return aux;
+        aux = aux->prox;
+    }
+    return NULL;
+}
+
 // Liberar LDE
 template <typename T>
 void deleteLDE(LDE<T> *list)
@@ -228,111 +239,4 @@ void deleteLDE(LDE<T> *list)
         delete temp;
     }
     list->head = list->tail = NULL;
-}
-
-// ---- Lista de vertices: cada vertice guarda sua propria lista de arestas ----
-
-struct NodeVertice
-{
-    int id;
-    LDE<int> listaAdjacencia;
-    NodeVertice *prox = NULL;
-    NodeVertice *prev = NULL;
-};
-
-struct LDEVertices
-{
-    NodeVertice *head = NULL;
-    NodeVertice *tail = NULL;
-};
-
-void initializeLDEVertices(LDEVertices &list)
-{
-    list.head = NULL;
-    list.tail = NULL;
-}
-
-// Inserir vertice
-void insertVertice(LDEVertices *list, int id)
-{
-    NodeVertice *new_node = new NodeVertice;
-    new_node->id = id;
-    initializeLDE(new_node->listaAdjacencia);
-    new_node->prox = NULL;
-    new_node->prev = NULL;
-
-    if (list->tail == NULL)
-    {
-        list->head = new_node;
-        list->tail = new_node;
-    }
-    else
-    {
-        list->tail->prox = new_node;
-        new_node->prev = list->tail;
-        list->tail = new_node;
-    }
-}
-
-// Encontrar vertice
-NodeVertice *findVertice(LDEVertices *list, int id)
-{
-    NodeVertice *aux = list->head;
-    while (aux != NULL)
-    {
-        if (aux->id == id)
-        {
-            return aux;
-        }
-        aux = aux->prox;
-    }
-    return NULL;
-}
-
-// Remover vertice
-bool removerVertice(LDEVertices *list, int id)
-{
-    NodeVertice *aux = list->head;
-    while (aux != NULL)
-    {
-        if (aux->id == id)
-        {
-            if (aux->prev != NULL)
-            {
-                aux->prev->prox = aux->prox;
-            }
-            else
-            {
-                list->head = aux->prox;
-            }
-            if (aux->prox != NULL)
-            {
-                aux->prox->prev = aux->prev;
-            }
-            else
-            {
-                list->tail = aux->prev;
-            }
-            deleteLDE(&aux->listaAdjacencia);
-            delete aux;
-            return true;
-        }
-        aux = aux->prox;
-    }
-    return false;
-}
-
-// Deletar lista de vertices
-void deleteVertices(LDEVertices *list)
-{
-    NodeVertice *aux = list->head;
-    while (aux != NULL)
-    {
-        NodeVertice *temp = aux;
-        aux = aux->prox;
-        deleteLDE(&temp->listaAdjacencia);
-        delete temp;
-    }
-    list->head = NULL;
-    list->tail = NULL;
 }
