@@ -25,11 +25,11 @@ int main(){
     cout << endl;
     cout << "Grafo matriz funcoes :" << endl;
     cout << "1 , 1" << endl;
-    cout << grafom1.existeAresta(1, 1) << endl;
+    cout << grafom1.existsAresta(1, 1) << endl;
     cout << "3, 1" << endl;
-    cout << grafom1.existeAresta(3, 1) << endl;
+    cout << grafom1.existsAresta(3, 1) << endl;
     cout << "1, 2" << endl;
-    cout << grafom1.existeAresta(1, 2) << endl;
+    cout << grafom1.existsAresta(1, 2) << endl;
 
     // Testes de grafo lista
     GrafoLista grafol1(false, false, 5);
@@ -43,11 +43,11 @@ int main(){
     cout << endl;
     cout << "Grafo lista funcoes :" << endl;
     cout << "1 , 1" << endl;
-    cout << grafol1.existeAresta(1, 1) << endl;
+    cout << grafol1.existsAresta(1, 1) << endl;
     cout << "3, 1" << endl;
-    cout << grafol1.existeAresta(3, 1) << endl;
+    cout << grafol1.existsAresta(3, 1) << endl;
     cout << "1, 2" << endl;
-    cout << grafol1.existeAresta(1, 2) << endl;
+    cout << grafol1.existsAresta(1, 2) << endl;
 
 
     /*insertNode(&list, 3, 10);
