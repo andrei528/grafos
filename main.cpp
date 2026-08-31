@@ -5,68 +5,60 @@
 using namespace std;
 
 int main(){
+    int tipoGrafo;
+    cout << "1 - Matriz\n2 - Lista\nEscolha: ";
+    cin >> tipoGrafo;
 
-    LDE <int> list;
-    initializeLDE(list);
+    int origemDados;
+    cout << "1 - Carregar de arquivo\n2 - Criar vazio\nEscolha: ";
+    cin >> origemDados;
 
-    insertNode(&list, 5, 20);
-    insertNode(&list, 3, 20);
-    showLDE(&list);
-    
-    // Testes de grafo matriz
-    GrafoMatriz grafom1(false, false, 5);
+    if(tipoGrafo == 1){
+        if(origemDados == 1){
+            string caminho;
+            cout << "Caminho: "; cin >> caminho;
 
-    grafom1.insertAresta(1, 1);
-    grafom1.insertAresta(2, 1);
-    grafom1.insertAresta(3, 1);
+            GrafoMatriz gm = lerGrafo<GrafoMatriz>(caminho);
+            menu(gm);
+        }
+        else{
+            char direcionado, ponderado;
+            bool direc, pond;
+            int numVertices;
+            cout << "\nDirecionado? (s/n) "; cin >> direcionado;
+            cout << "\nPonderado? (s/n) "; cin >> ponderado;
+            cout << "\nNumero de vertices: "; cin >> numVertices;
 
-    grafom1.removeAresta(3, 1);
+            direc = (direcionado == 's' || direcionado == 'S');
+            pond = (ponderado == 's' || ponderado == 'S');
 
-    cout << endl;
-    cout << "Grafo matriz funcoes :" << endl;
-    cout << "1 , 1" << endl;
-    cout << grafom1.existsAresta(1, 1) << endl;
-    cout << "3, 1" << endl;
-    cout << grafom1.existsAresta(3, 1) << endl;
-    cout << "1, 2" << endl;
-    cout << grafom1.existsAresta(1, 2) << endl;
+            GrafoMatriz gm(direc, pond, numVertices);
+            menu(gm);
+        }
+    }
+    else{
+        if(origemDados == 1){
+            string caminho;
+            cout << "Caminho: "; cin >> caminho;
 
-    // Testes de grafo lista
-    GrafoLista grafol1(false, false, 5);
+            GrafoLista gl = lerGrafo<GrafoLista>(caminho);
+            menu(gl);
+        }
+        else{
+            char direcionado, ponderado;
+            bool direc, pond;
+            int numVertices;
+            cout << "\nDirecionado? (s/n) "; cin >> direcionado;
+            cout << "\nPonderado? (s/n) "; cin >> ponderado;
+            cout << "\nNumero de vertices: "; cin >> numVertices;
 
-    grafol1.insertAresta(1, 1);
-    grafol1.insertAresta(2, 1);
-    grafol1.insertAresta(3, 1);
+            direc = (direcionado == 's' || direcionado == 'S');
+            pond = (ponderado == 's' || ponderado == 'S');
 
-    grafol1.removeAresta(3, 1);
-
-    cout << endl;
-    cout << "Grafo lista funcoes :" << endl;
-    cout << "1 , 1" << endl;
-    cout << grafol1.existsAresta(1, 1) << endl;
-    cout << "3, 1" << endl;
-    cout << grafol1.existsAresta(3, 1) << endl;
-    cout << "1, 2" << endl;
-    cout << grafol1.existsAresta(1, 2) << endl;
-
-
-    /*insertNode(&list, 3, 10);
-    insertNode(&list, 5, 20);
-    insertNode(&list, 4, 30);
-    insertNode(&list, 6, 40);
-    insertNode(&list, 1, 23);
-    insertNode(&list, 10, 2);
-
-    showLDE(list);
-
-    removeNode(&list, 4);
-    removeNode(&list, 6);
-
-    cout << endl;
-
-    showLDE(list);*/
-
-    deleteLDE(&list);
+            GrafoLista gl(direc, pond, numVertices);
+            menu(gl);
+        }
+    }
 
     return 0;
 }
